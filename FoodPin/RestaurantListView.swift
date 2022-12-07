@@ -20,7 +20,7 @@ struct RestaurantListView: View {
     var body: some View {
         List {
             ForEach(restaurantNames.indices, id: \.self) { index in
-                FullImageRow(imageName: restaurantImages[index], name: restaurantNames[index], type: restaurantTypes[index], location: restaurantLocations[index])
+                BasicTextImageRow(imageName: restaurantImages[index], name: restaurantNames[index], type: restaurantTypes[index], location: restaurantLocations[index])
             }
             .listRowSeparator(.hidden)
         }
