@@ -39,6 +39,8 @@ struct RestaurantListView_Previews: PreviewProvider {
 
 struct BasicTextImageRow: View {
     
+    @State private var showOptions = false
+    
     var imageName: String
     var name: String
     var type: String
@@ -63,8 +65,22 @@ struct BasicTextImageRow: View {
                     .font(.system(.subheadline, design: .rounded))
                     .foregroundColor(.gray)
             }
-            //.padding(.horizontal)
-            //.padding(.bottom)
+        }
+        .onTapGesture {
+            showOptions.toggle()
+        }
+        .actionSheet(isPresented: $showOptions) {
+            ActionSheet(title: Text("What do you want to do?"),
+                        message: nil,
+                        buttons: [
+                            .default(Text("Reserve a table?")) {
+                                
+                            },
+                            .default(Text("Mark as favorite")) {
+                                
+                            },
+                            .cancel()
+                        ])
         }
     }
 }
