@@ -136,8 +136,8 @@ struct FullImageRow: View {
                     .font(.system(.subheadline, design: .rounded))
                     .foregroundColor(.gray)
             }
-            .padding(.horizontal)
-            .padding(.bottom)
+//            .padding(.horizontal)
+//            .padding(.bottom)
         }
     }
 }
