@@ -40,6 +40,7 @@ struct RestaurantListView_Previews: PreviewProvider {
 struct BasicTextImageRow: View {
     
     @State private var showOptions = false
+    @State private var showError = false
     
     var imageName: String
     var name: String
@@ -54,7 +55,7 @@ struct BasicTextImageRow: View {
                 .frame(width:120, height: 118)
                 .cornerRadius(20)
             
-            VStack (alignment: .leading){
+            VStack (alignment: .leading) {
                 Text(name)
                     .font(.system(.title2, design: .rounded))
                 
@@ -73,14 +74,22 @@ struct BasicTextImageRow: View {
             ActionSheet(title: Text("What do you want to do?"),
                         message: nil,
                         buttons: [
-                            .default(Text("Reserve a table?")) {
-                                
+                            .default(Text("Reserve a table")) {
+                                self.showError.toggle()
                             },
                             .default(Text("Mark as favorite")) {
                                 
                             },
                             .cancel()
                         ])
+        }
+        .alert(isPresented: $showError) {
+            Alert(title: Text("Not yet available"),
+                  message: Text("Sorry, this feature is not available yet. Please retry later."),
+                  primaryButton: .default(Text("OK")),
+                  secondaryButton: .cancel()
+            )
+            
         }
     }
 }
