@@ -9,6 +9,8 @@ import SwiftUI
 
 struct RestaurantListView: View {
     
+    @State var restaurantIsFavorites = Array(repeating: false, count: 21)
+    
     var restaurantNames = ["Cafe Deadend", "Homei", "Teakha", "Cafe Loisl", "Petite Oyster", "For Kee Restaurant", "Po's Atelier", "Bourke Street Bakery", "Haigh's Chocolate", "Palomino Espresso", "Upstate", "Traif", "Graham Avenue Meats and Deli", "Waffle & Wolf", "Five Leaves", "Cafe Lore", "Confessional", "Barrafina", "Donostia", "Royal Oak", "CASK Pub and Kitchen"]
     
     var restaurantImages = ["cafedeadend", "homei", "teakha", "cafeloisl", "petiteoyster", "forkee", "posatelier", "bourkestreetbakery", "haigh", "palomino", "upstate", "traif", "graham", "waffleandwolf", "fiveleaves", "cafelore", "confessional", "barrafina", "donostia", "royaloak", "cask"]
@@ -20,7 +22,7 @@ struct RestaurantListView: View {
     var body: some View {
         List {
             ForEach(restaurantNames.indices, id: \.self) { index in
-                BasicTextImageRow(imageName: restaurantImages[index], name: restaurantNames[index], type: restaurantTypes[index], location: restaurantLocations[index])
+                BasicTextImageRow(isFavorite: $restaurantIsFavorites[index], imageName: restaurantImages[index], name: restaurantNames[index], type: restaurantTypes[index], location: restaurantLocations[index])
             }
             .listRowSeparator(.hidden)
         }
@@ -34,6 +36,12 @@ struct RestaurantListView_Previews: PreviewProvider {
         
         RestaurantListView()
             .preferredColorScheme(.dark)
+        
+        BasicTextImageRow(isFavorite: .constant(true), imageName: "cafedeadend", name: "Cafe Deadend", type: "Cafe", location: "Hong Kong")
+            .previewLayout(.sizeThatFits)
+        
+        FullImageRow(imageName: "cafedeadend", name: "Cafe Deadend", type: "Cafe", location: "Hong Kong")
+            .previewLayout(.sizeThatFits)
     }
 }
 
@@ -41,6 +49,7 @@ struct BasicTextImageRow: View {
     
     @State private var showOptions = false
     @State private var showError = false
+    @Binding var isFavorite: Bool
     
     var imageName: String
     var name: String
@@ -65,6 +74,13 @@ struct BasicTextImageRow: View {
                 Text(location)
                     .font(.system(.subheadline, design: .rounded))
                     .foregroundColor(.gray)
+                
+            if isFavorite {
+                Spacer()
+                
+                Image(systemName: "heart.fill")
+                    .foregroundColor(.yellow)
+                }
             }
         }
         .onTapGesture {
@@ -78,7 +94,7 @@ struct BasicTextImageRow: View {
                                 self.showError.toggle()
                             },
                             .default(Text("Mark as favorite")) {
-                                
+                                self.isFavorite.toggle()
                             },
                             .cancel()
                         ])
