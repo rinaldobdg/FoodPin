@@ -8,9 +8,7 @@
 import SwiftUI
 
 struct RestaurantListView: View {
-    
-    @State var restaurantIsFavorites = Array(repeating: false, count: 21)
-    
+
     var restaurantNames = ["Cafe Deadend", "Homei", "Teakha", "Cafe Loisl", "Petite Oyster", "For Kee Restaurant", "Po's Atelier", "Bourke Street Bakery", "Haigh's Chocolate", "Palomino Espresso", "Upstate", "Traif", "Graham Avenue Meats and Deli", "Waffle & Wolf", "Five Leaves", "Cafe Lore", "Confessional", "Barrafina", "Donostia", "Royal Oak", "CASK Pub and Kitchen"]
     
     var restaurantImages = ["cafedeadend", "homei", "teakha", "cafeloisl", "petiteoyster", "forkee", "posatelier", "bourkestreetbakery", "haigh", "palomino", "upstate", "traif", "graham", "waffleandwolf", "fiveleaves", "cafelore", "confessional", "barrafina", "donostia", "royaloak", "cask"]
@@ -19,10 +17,12 @@ struct RestaurantListView: View {
     
     var restaurantTypes = ["Coffee & Tea Shop", "Cafe", "Tea House", "Austrian / Casual Drink", "French", "Bakery", "Bakery", "Chocolate", "Cafe", "American / Seafood", "American", "American", "Breakfast & Brunch", "Coffee & Tea", "Coffee & Tea", "Latin American", "Spanish", "Spanish", "Spanish", "British", "Thai"]
     
+    @State var restaurantIsFavorites = Array(repeating: false, count: 21)
+    
     var body: some View {
         List {
             ForEach(restaurantNames.indices, id: \.self) { index in
-                BasicTextImageRow(isFavorite: $restaurantIsFavorites[index], imageName: restaurantImages[index], name: restaurantNames[index], type: restaurantTypes[index], location: restaurantLocations[index])
+                BasicTextImageRow(imageName: restaurantImages[index], name: restaurantNames[index], type: restaurantTypes[index], location: restaurantLocations[index], isFavorite: $restaurantIsFavorites[index])
             }
             .listRowSeparator(.hidden)
         }
@@ -30,37 +30,23 @@ struct RestaurantListView: View {
     }
 }
 
-struct RestaurantListView_Previews: PreviewProvider {
-    static var previews: some View {
-        RestaurantListView()
-        
-        RestaurantListView()
-            .preferredColorScheme(.dark)
-        
-        BasicTextImageRow(isFavorite: .constant(true), imageName: "cafedeadend", name: "Cafe Deadend", type: "Cafe", location: "Hong Kong")
-            .previewLayout(.sizeThatFits)
-        
-        FullImageRow(imageName: "cafedeadend", name: "Cafe Deadend", type: "Cafe", location: "Hong Kong")
-            .previewLayout(.sizeThatFits)
-    }
-}
+
 
 struct BasicTextImageRow: View {
-    
-    @State private var showOptions = false
-    @State private var showError = false
-    @Binding var isFavorite: Bool
-    
+
     var imageName: String
     var name: String
     var type: String
     var location: String
+    @Binding var isFavorite: Bool
+    
+    @State private var showOptions = false
+    @State private var showError = false
     
     var body: some View {
         HStack (alignment: .top, spacing: 20) {
             Image(imageName)
                 .resizable()
-                //.scaledToFill()
                 .frame(width:120, height: 118)
                 .cornerRadius(20)
             
@@ -75,12 +61,13 @@ struct BasicTextImageRow: View {
                     .font(.system(.subheadline, design: .rounded))
                     .foregroundColor(.gray)
                 
+            }
+            
             if isFavorite {
                 Spacer()
                 
                 Image(systemName: "heart.fill")
                     .foregroundColor(.yellow)
-                }
             }
         }
         .onTapGesture {
@@ -103,8 +90,7 @@ struct BasicTextImageRow: View {
             Alert(title: Text("Not yet available"),
                   message: Text("Sorry, this feature is not available yet. Please retry later."),
                   primaryButton: .default(Text("OK")),
-                  secondaryButton: .cancel()
-            )
+                  secondaryButton: .cancel())
             
         }
     }
@@ -139,5 +125,20 @@ struct FullImageRow: View {
             .padding(.horizontal)
             .padding(.bottom)
         }
+    }
+}
+
+struct RestaurantListView_Previews: PreviewProvider {
+    static var previews: some View {
+        RestaurantListView()
+        
+        RestaurantListView()
+            .preferredColorScheme(.dark)
+        
+        BasicTextImageRow(imageName: "cafedeadend", name: "Cafe Deadend", type: "Cafe", location: "Hong Kong", isFavorite: .constant(true))
+            .previewLayout(.sizeThatFits)
+        
+        FullImageRow(imageName: "cafedeadend", name: "Cafe Deadend", type: "Cafe", location: "Hong Kong")
+            .previewLayout(.sizeThatFits)
     }
 }
