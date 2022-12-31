@@ -46,18 +46,20 @@ struct RestaurantListView: View {
     }
 }
 
+// MARK: - BasicTextImageRow
+
 struct BasicTextImageRow: View {
 
-//    var imageName: String
-//    var name: String
-//    var type: String
-//    var location: String
-//    @Binding var isFavorite: Bool
+    // MARK: - Binding
     
     @Binding var restaurant: Restaurant
     
+    // MARK: - State variables
+    
     @State private var showOptions = false
     @State private var showError = false
+    
+    // MARK: - View body
     
     var body: some View {
         HStack (alignment: .top, spacing: 20) {
@@ -107,7 +109,6 @@ struct BasicTextImageRow: View {
                   message: Text("Sorry, this feature is not available yet. Please retry later."),
                   primaryButton: .default(Text("OK")),
                   secondaryButton: .cancel())
-            
         }
     }
 }

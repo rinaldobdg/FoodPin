@@ -5,7 +5,7 @@
 //  Created by Benny Rinaldo on 19/12/22.
 //
 
-//import Foundation
+import Foundation
 
 struct Restaurant {
     var name: String
